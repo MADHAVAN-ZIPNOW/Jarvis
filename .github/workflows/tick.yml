@@ -3,7 +3,11 @@ name: jarvis-tick
 on:
   schedule:
     - cron: "*/15 * * * *"   # GitHub may delay scheduled runs by a few minutes; the service enforces the real hourly interval
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      ring_team:
+        description: "Ring the team-update call again"
+        default: "false"
 
 concurrency:
   group: jarvis-tick
@@ -24,6 +28,7 @@ jobs:
         env:
           JM_URL: ${{ secrets.JM_URL }}
           JM_OWNER_KEY: ${{ secrets.JM_OWNER_KEY }}
+          RING_TEAM: ${{ inputs.ring_team }}
           GMAIL_ADDRESS: ${{ secrets.GMAIL_ADDRESS }}
           GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
         run: python run_tick.py
