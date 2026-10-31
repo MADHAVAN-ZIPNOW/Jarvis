@@ -5,6 +5,9 @@ on:
     - cron: "*/15 * * * *"   # GitHub may delay scheduled runs by a few minutes; the service enforces the real hourly interval
   workflow_dispatch:
     inputs:
+      test_email:
+        description: "Send ONE sample team e-mail to the owner only"
+        default: "false"
       ring_team:
         description: "Ring the team-update call again"
         default: "false"
@@ -28,6 +31,7 @@ jobs:
         env:
           JM_URL: ${{ secrets.JM_URL }}
           JM_OWNER_KEY: ${{ secrets.JM_OWNER_KEY }}
+          TEST_TEAM_EMAIL: ${{ inputs.test_email }}
           RING_TEAM: ${{ inputs.ring_team }}
           GMAIL_ADDRESS: ${{ secrets.GMAIL_ADDRESS }}
           GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
